@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IL Rang">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<title>IL Rang</title>
+<meta name="theme-color" content="#0a0e1a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-screen mobile app — status window on top, scrolling view, fixed bottom tab bar. Single dark look by choice. */
+:root{
+  --bg:#0a0e1a; --panel:#121a2e; --panel-2:#18223b; --line:#25314f;
+  --fg:#e8edf8; --muted:#8a96b3; --accent:#5aa8ff; --good:#3ddc97; --danger:#ff6b6b;
+  --rank:#9aa5bd;
+  --display:"Rajdhani","Arial Narrow",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{max-width:520px;margin:0 auto;min-height:100%;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px calc(96px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:18px}
+
+/* Status window */
+.status{background:linear-gradient(160deg,var(--panel-2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:center;position:relative;overflow:hidden}
+.status::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 30%,color-mix(in srgb,var(--rank) 22%,transparent),transparent 55%);pointer-events:none}
+.badge{grid-row:span 3;width:84px;height:84px;border-radius:20px;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:44px;line-height:1;color:var(--rank);border:2px solid var(--rank);background:color-mix(in srgb,var(--rank) 10%,var(--bg));box-shadow:0 0 24px color-mix(in srgb,var(--rank) 35%,transparent);transition:color .4s,border-color .4s}
+.badge.small{font-size:22px;letter-spacing:.04em}
+.who{font-family:var(--display);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.rankname{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.05;color:var(--rank)}
+.bar{height:10px;border-radius:99px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.fill{height:100%;width:0;background:var(--rank);border-radius:99px;transition:width .5s ease,background .4s}
+.meta{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin-top:6px;position:relative;z-index:1}
+.meta b{color:var(--fg);font-weight:600}
+
+/* Section heads */
+.head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.head h2{margin:0;font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:.02em}
+.head .sub{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.link{background:none;border:none;color:var(--accent);font-size:14px;padding:4px 0}
+
+/* Daily progress strip */
+.today{display:flex;gap:6px}
+.today span{flex:1;height:6px;border-radius:99px;background:var(--line);transition:background .3s}
+.today span.on{background:var(--good)}
+
+/* Missions */
+.list{display:flex;flex-direction:column;gap:10px}
+.mission{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:transform .12s,background .2s,border-color .2s}
+.mission:active{transform:scale(.98)}
+.check{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;transition:all .2s}
+.check svg{width:16px;height:16px;opacity:0;transition:opacity .2s}
+.mission .n{flex:1;min-width:0;font-weight:500}
+.mission .freq{display:block;font-size:12px;font-weight:400;color:var(--muted);margin-top:2px;text-decoration:none}
+.mission .x{font-family:var(--display);font-weight:700;font-size:17px;color:var(--accent);font-variant-numeric:tabular-nums}
+.mission.done{background:color-mix(in srgb,var(--good) 8%,var(--panel));border-color:color-mix(in srgb,var(--good) 40%,var(--line))}
+.mission.done .check{background:var(--good);border-color:var(--good)}
+.mission.done .check svg{opacity:1}
+.mission.done .n{color:var(--muted);text-decoration:line-through}
+.mission.done .x{color:var(--good)}
+.del{flex:none;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--danger);font-size:18px;line-height:1}
+.bonus{font-size:13px;color:var(--muted);text-align:center;padding:10px;border:1px dashed var(--line);border-radius:12px}
+.bonus.on{color:var(--good);border-color:color-mix(in srgb,var(--good) 50%,var(--line))}
+.add{display:flex;gap:8px;flex-wrap:wrap}
+.add input,.add select{background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--fg);padding:12px;font:inherit}
+.add input{flex:1 1 180px;min-width:0}
+.btn{background:var(--accent);color:#06101f;border:none;border-radius:12px;padding:12px 16px;font-weight:600}
+.btn.ghost{background:var(--panel);color:var(--fg);border:1px solid var(--line)}
+.btn.danger{background:var(--danger);color:#1a0505}
+
+/* Rank ladder */
+.ladder{display:flex;flex-direction:column;gap:8px}
+.step{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
+.step .l{font-family:var(--display);font-weight:700;font-size:24px;text-align:center;color:var(--c)}
+.step .t{font-weight:600}
+.step .r{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.step.locked{opacity:.45}
+.step.current{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset,0 0 20px color-mix(in srgb,var(--c) 20%,transparent)}
+.step .tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+
+/* History */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat .v{font-family:var(--display);font-weight:700;font-size:26px;font-variant-numeric:tabular-nums}
+.stat .k{font-size:12px;color:var(--muted)}
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 12px 10px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:130px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;min-width:0}
+.col i{display:block;width:100%;border-radius:5px 5px 2px 2px;background:color-mix(in srgb,var(--accent) 55%,var(--line));min-height:2px}
+.col i.perfect{background:var(--good)}
+.col i.today{background:var(--accent)}
+.col small{font-size:10px;color:var(--muted)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--d)}
+
+/* Tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.tabs-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tab{background:none;border:none;border-radius:12px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;color:var(--muted)}
+.tab svg{width:22px;height:22px}
+.tab[aria-selected="true"]{color:var(--accent);background:var(--panel)}
+
+/* Overlay */
+.overlay{position:fixed;inset:0;z-index:30;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(6px);display:grid;place-items:center;padding:24px}
+.card{width:min(360px,100%);background:var(--panel);border:1px solid var(--rank);border-radius:22px;padding:28px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 0 50px color-mix(in srgb,var(--rank) 30%,transparent);animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+.card .badge{grid-row:auto;width:110px;height:110px;font-size:58px}
+.card .eyebrow{font-family:var(--display);letter-spacing:.24em;text-transform:uppercase;font-size:13px;color:var(--muted)}
+.card h3{margin:0;font-family:var(--display);font-size:32px;color:var(--rank)}
+.card p{margin:0;color:var(--muted)}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+
+.float{position:fixed;z-index:25;pointer-events:none;font-family:var(--display);font-weight:700;font-size:20px;color:var(--good);animation:rise .9s ease-out forwards}
+@keyframes rise{from{transform:translateY(0);opacity:1}to{transform:translateY(-46px);opacity:0}}
+.sync{font-size:12px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <section class="status" aria-label="Ton rang">
+    <div class="badge" id="badge">N</div>
+    <div class="who">Ivan Lorenzo · <span id="cycle">Cycle 1</span></div>
+    <div class="rankname" id="rankName">Novice</div>
+    <div class="bar" role="progressbar" aria-label="Progression vers le prochain rang"><div class="fill" id="fill"></div></div>
+    <div class="meta"><span id="xpLine"></span><span>🔥 <b id="streak">0</b> j</span></div>
+  </section>
+
+  <!-- Missions -->
+  <section id="view-missions" class="view" style="display:flex;flex-direction:column;gap:14px">
+    <div class="head"><h2>Missions du jour</h2><button class="link" id="editBtn">Modifier</button></div>
+    <div class="today" id="todayStrip"></div>
+    <div class="list" id="missions"></div>
+    <div class="bonus" id="bonus"></div>
+    <div class="sync" id="tomorrow"></div>
+    <form class="add" id="addForm" hidden>
+      <input id="newName" placeholder="Nouvelle mission" maxlength="40" required>
+      <select id="newXp" aria-label="XP de la mission">
+        <option value="10">+10 XP</option><option value="15">+15 XP</option><option value="20" selected>+20 XP</option><option value="30">+30 XP</option><option value="40">+40 XP</option><option value="50">+50 XP</option>
+      </select>
+      <select id="newEvery" aria-label="Fréquence">
+        <option value="1">Chaque jour</option><option value="2">1 jour sur 2</option><option value="3">1 jour sur 3</option>
+      </select>
+      <button class="btn" type="submit">Ajouter</button>
+    </form>
+  </section>
+
+  <!-- Rangs -->
+  <section id="view-ranks" class="view" hidden style="flex-direction:column;gap:14px">
+    <div class="head"><h2>Échelle des rangs</h2><span class="sub" id="ranksSub"></span></div>
+    <div class="ladder" id="ladder"></div>
+    <div id="resetZone" style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <button class="btn ghost" id="resetAsk">Tout réinitialiser</button>
+      <div id="resetConfirm" hidden style="display:flex;gap:8px">
+        <button class="btn danger" id="resetYes" style="flex:1">Oui, tout effacer</button>
+        <button class="btn ghost" id="resetNo" style="flex:1">Annuler</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historique -->
+  <section id="view-history" class="view" hidden style="flex-direction:column;gap:14px">
+    <div class="head"><h2>Historique</h2><span class="sub">14 derniers jours</span></div>
+    <div class="stats">
+      <div class="stat"><div class="v" id="sBest">0</div><div class="k">Meilleure série</div></div>
+      <div class="stat"><div class="v" id="sPerfect">0</div><div class="k">Journées parfaites</div></div>
+      <div class="stat"><div class="v" id="sDays">0</div><div class="k">Jours actifs</div></div>
+    </div>
+    <div class="chart">
+      <div class="bars" id="bars"></div>
+      <div class="legend"><span style="--d:var(--good)">Journée parfaite</span><span style="--d:var(--accent)">Aujourd'hui</span></div>
+    </div>
+  </section>
+
+  <div class="sync" id="sync"></div>
+</div>
+
+<nav class="tabs" aria-label="Navigation">
+  <div class="tabs-in" role="tablist">
+    <button class="tab" role="tab" data-v="missions" aria-selected="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Missions</button>
+    <button class="tab" role="tab" data-v="ranks" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.6 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg>Rangs</button>
+    <button class="tab" role="tab" data-v="history" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Historique</button>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="upTitle">
+    <div class="eyebrow">Rang supérieur</div>
+    <div class="badge" id="upBadge">E</div>
+    <h3 id="upTitle">Rang E</h3>
+    <p id="upText"></p>
+    <button class="btn" id="upClose" style="margin-top:6px;width:100%">Continuer</button>
+  </div>
+</div>
+
+<script>
+const RANKS=[
+  {k:"N",n:"Novice",min:0,c:"#9aa5bd"},
+  {k:"E",n:"Rang E",min:600,c:"#7bd88f"},
+  {k:"D",n:"Rang D",min:1800,c:"#3fd0c9"},
+  {k:"C",n:"Rang C",min:3600,c:"#5aa8ff"},
+  {k:"B",n:"Rang B",min:6600,c:"#a78bfa"},
+  {k:"A",n:"Rang A",min:10800,c:"#ff9f43"},
+  {k:"S",n:"Rang S",min:16500,c:"#ff5e7a"},
+  {k:"NATION",n:"Nation",min:24000,c:"#f5c542"}
+];
+const PERFECT_BONUS=25;
+/* every = tous les X jours, off = décalage dans le cycle (jour 0 = 18 nov. 2026) */
+const DEFAULT_MISSIONS=[
+  {id:"course",n:"Course",xp:30,every:2,off:0},
+  {id:"marche",n:"Marche",xp:15,every:2,off:1},
+  {id:"lecture",n:"Lecture · 1h",xp:20,every:1,off:0},
+  {id:"prospect",n:"Prospection ×20",xp:40,every:1,off:0},
+  {id:"abdos",n:"Sport · abdos",xp:25,every:3,off:0},
+  {id:"bras",n:"Sport · bras",xp:25,every:3,off:1},
+  {id:"jambes",n:"Sport · jambes",xp:25,every:3,off:2},
+  {id:"podcast",n:"Podcast SOS",xp:15,every:1,off:0},
+  {id:"trading",n:"Graphique trading",xp:20,every:1,off:0}
+];
+const VERSION=3;
+function migrate(s){if(s.v===VERSION)return false;if((s.v||0)<2)s.missions=DEFAULT_MISSIONS.map(m=>({...m}));else DEFAULT_MISSIONS.forEach(m=>{if(!s.missions.some(x=>x.id===m.id))s.missions.push({...m})});s.v=VERSION;return true}
+const ANCHOR=Date.UTC(2026,10,18);
+const LS="ilRangApp";
+const $=id=>document.getElementById(id);
+
+function dayKey(d=new Date()){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dayIndex(d=new Date()){return Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-ANCHOR)/864e5)}
+function mod(a,b){return((a%b)+b)%b}
+function isDue(m,d=new Date()){const e=m.every||1;return mod(dayIndex(d),e)===mod(m.off||0,e)}
+function todays(d=new Date()){return S.missions.filter(m=>isDue(m,d))}
+function freqLabel(m){return(m.every||1)===1?"Chaque jour":`1 jour sur ${m.every}`}
+function fresh(){return {v:VERSION,missions:DEFAULT_MISSIONS.map(m=>({...m})),days:{},legacy:0,updatedAt:0}}
+
+let S=fresh();
+try{const raw=localStorage.getItem(LS);if(raw)S=JSON.parse(raw);else{const old=JSON.parse(localStorage.getItem("ilRank")||"null");if(old&&old.xp)S.legacy=old.xp;}}catch(e){}
+if(!S.missions)S=fresh();
+migrate(S);
+
+let editing=false;
+
+function dayXp(day){if(!day)return 0;let t=0;for(const v of Object.values(day.done||{}))t+=v;if(day.bonus)t+=PERFECT_BONUS;return t}
+function totalXp(){let t=S.legacy||0;for(const d of Object.values(S.days))t+=dayXp(d);return t}
+/* Cycles : XP du cycle = XP total - base. Le lendemain du passage Nation, on repart au rang E (cycle suivant). */
+function cycleXp(){return totalXp()-(S.base||0)}
+const NATION=RANKS.length-1;
+function checkCycle(){
+  const k=dayKey();
+  if(rankIndex(cycleXp())===NATION){if(!S.nationDay)S.nationDay=k}else S.nationDay=null;
+  if(S.nationDay&&S.nationDay<k){S.cycle=(S.cycle||1)+1;S.base=totalXp()-RANKS[1].min;S.nationDay=null;S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+}
+function rankIndex(xp){let i=RANKS.length-1;while(xp<RANKS[i].min)i--;return i}
+function activeDay(k){const d=S.days[k];return d&&Object.keys(d.done||{}).length>0}
+function streakFrom(date){let n=0;const d=new Date(date);while(activeDay(dayKey(d))){n++;d.setDate(d.getDate()-1)}return n}
+function currentStreak(){const t=new Date();if(activeDay(dayKey(t)))return streakFrom(t);t.setDate(t.getDate()-1);return streakFrom(t)}
+function bestStreak(){const keys=Object.keys(S.days).filter(activeDay).sort();let best=0,run=0,prev=null;for(const k of keys){const d=new Date(k+"T12:00");if(prev&&(d-prev)/864e5<1.5)run++;else run=1;best=Math.max(best,run);prev=d}return best}
+
+function today(){const k=dayKey();if(!S.days[k])S.days[k]={done:{},bonus:false};return S.days[k]}
+
+function setRankColors(r){document.documentElement.style.setProperty("--rank",r.c)}
+
+function renderStatus(){
+  const xp=cycleXp(),i=rankIndex(xp),r=RANKS[i],next=RANKS[i+1];
+  $("cycle").textContent="Cycle "+(S.cycle||1);
+  setRankColors(r);
+  $("badge").textContent=r.k;$("badge").classList.toggle("small",r.k.length>2);
+  $("rankName").textContent=r.n;
+  $("fill").style.width=(next?((xp-r.min)/(next.min-r.min))*100:100)+"%";
+  $("xpLine").innerHTML=next?`<b>${xp}</b> XP · encore ${next.min-xp} pour ${next.n}`:`<b>${xp}</b> XP · rang maximum`;
+  $("streak").textContent=currentStreak();
+  return i;
+}
+
+function renderMissions(){
+  const day=S.days[dayKey()]||{done:{}};
+  const list=$("missions");list.innerHTML="";
+  const shown=editing?S.missions:todays();
+  shown.forEach(m=>{
+    const done=m.id in (day.done||{});
+    const row=document.createElement(editing?"div":"button");
+    row.className="mission"+(done&&!editing?" done":"");
+    if(!editing){row.type="button";row.setAttribute("aria-pressed",done)}
+    row.innerHTML=`${editing?"":`<span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#06101f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span>`}<span class="n"></span><span class="x">+${m.xp}</span>`;
+    row.querySelector(".n").textContent=m.n;
+    if((m.every||1)>1||editing){const f=document.createElement("small");f.className="freq";f.textContent=freqLabel(m);row.querySelector(".n").appendChild(f)}
+    if(editing){const b=document.createElement("button");b.className="del";b.type="button";b.textContent="×";b.setAttribute("aria-label","Supprimer "+m.n);b.onclick=()=>{S.missions=S.missions.filter(x=>x.id!==m.id);commit()};row.appendChild(b)}
+    else row.onclick=e=>toggle(m,e);
+    list.appendChild(row);
+  });
+  const tm=todays(),n=tm.length,c=tm.filter(m=>m.id in (day.done||{})).length;
+  $("todayStrip").innerHTML=tm.map((m,i)=>`<span class="${i<c?"on":""}"></span>`).join("");
+  const tmr=new Date();tmr.setDate(tmr.getDate()+1);
+  const nx=todays(tmr).filter(m=>(m.every||1)>1).map(m=>m.n);
+  $("tomorrow").textContent=nx.length?"Demain : "+nx.join(", "):"";
+  $("tomorrow").hidden=editing||!nx.length;
+  const b=$("bonus");
+  b.classList.toggle("on",!!day.bonus);
+  b.textContent=day.bonus?`Journée parfaite : +${PERFECT_BONUS} XP de bonus encaissés`:`${c}/${n} missions · valide tout pour +${PERFECT_BONUS} XP de bonus`;
+  b.hidden=editing;
+  $("addForm").hidden=!editing;
+  $("editBtn").textContent=editing?"Terminé":"Modifier";
+}
+
+function renderLadder(){
+  const xp=cycleXp(),cur=rankIndex(xp);
+  $("ranksSub").textContent=`${cur+1}/${RANKS.length}`;
+  $("ladder").innerHTML=RANKS.map((r,i)=>`<div class="step ${i===cur?"current":i>cur?"locked":""}" style="--c:${r.c}">
+    <div class="l">${r.k.length>2?"★":r.k}</div>
+    <div><div class="t">${r.n}</div>${i===cur?'<div class="tag">Rang actuel</div>':""}</div>
+    <div class="r">${r.min} XP</div></div>`).slice().reverse().join("");
+}
+
+function renderHistory(){
+  $("sBest").textContent=bestStreak();
+  $("sPerfect").textContent=Object.values(S.days).filter(d=>d.bonus).length;
+  $("sDays").textContent=Object.keys(S.days).filter(activeDay).length;
+  const days=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d)}
+  const vals=days.map(d=>dayXp(S.days[dayKey(d)]));const max=Math.max(60,...vals);
+  const L=["D","L","M","M","J","V","S"];
+  $("bars").innerHTML=days.map((d,i)=>{const k=dayKey(d),v=vals[i],isT=i===13,p=S.days[k]&&S.days[k].bonus;
+    return `<div class="col" title="${v} XP"><i class="${p?"perfect":isT?"today":""}" style="height:${(v/max)*100}%"></i><small>${L[d.getDay()]}</small></div>`}).join("");
+}
+
+function render(){checkCycle();const i=renderStatus();renderMissions();renderLadder();renderHistory();return i}
+
+function toggle(m,e){
+  const before=rankIndex(cycleXp());
+  const day=today();
+  if(m.id in day.done)delete day.done[m.id];
+  else{day.done[m.id]=m.xp;floatXp("+"+m.xp,e)}
+  const tm=todays();
+  const all=tm.length>0&&tm.every(x=>x.id in day.done);
+  if(all&&!day.bonus){day.bonus=true;setTimeout(()=>floatXp("+"+PERFECT_BONUS+" bonus",e),300)}
+  if(!all)day.bonus=false;
+  if(navigator.vibrate)try{navigator.vibrate(12)}catch(_){}
+  commit();
+  const after=rankIndex(cycleXp());
+  if(after>before)rankUp(after);
+}
+
+function floatXp(txt,e){
+  const f=document.createElement("div");f.className="float";f.textContent=txt;
+  const x=e&&e.clientX?e.clientX:innerWidth/2,y=e&&e.clientY?e.clientY:innerHeight/2;
+  f.style.left=(x-30)+"px";f.style.top=(y-20)+"px";document.body.appendChild(f);setTimeout(()=>f.remove(),950);
+}
+
+function rankUp(i){
+  const r=RANKS[i],next=RANKS[i+1];
+  $("upBadge").textContent=r.k;$("upBadge").classList.toggle("small",r.k.length>2);
+  $("upTitle").textContent=r.n;
+  $("upText").textContent=next?`Prochain objectif : ${next.n} à ${next.min} XP.`:`Sommet du cycle ${S.cycle||1} atteint. Demain, tu repars au rang E pour le cycle ${(S.cycle||1)+1}.`;
+  $("overlay").hidden=false;$("upClose").focus();
+}
+$("upClose").onclick=()=>{$("overlay").hidden=true};
+
+function commit(){
+  S.updatedAt=Date.now();
+  try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
+  render();
+}
+function setSync(t){$("sync").textContent=t}
+
+$("editBtn").onclick=()=>{editing=!editing;renderMissions()};
+$("addForm").addEventListener("submit",e=>{e.preventDefault();const n=$("newName").value.trim();if(!n)return;
+  const every=+$("newEvery").value;
+  S.missions.push({id:"m"+Date.now().toString(36),n,xp:+$("newXp").value,every,off:mod(dayIndex(),every)});$("newName").value="";commit()});
+
+$("resetAsk").onclick=()=>{$("resetConfirm").hidden=false;$("resetConfirm").style.display="flex";$("resetAsk").hidden=true};
+$("resetNo").onclick=()=>{$("resetConfirm").hidden=true;$("resetConfirm").style.display="";$("resetAsk").hidden=false};
+$("resetYes").onclick=()=>{S=fresh();$("resetNo").onclick();commit()};
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  document.querySelectorAll(".view").forEach(v=>{const on=v.id==="view-"+t.dataset.v;v.hidden=!on;v.style.display=on?"flex":""});
+  scrollTo({top:0});
+});
+
+render();
+setSync("Progression sauvegardée sur ce téléphone");
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+
+</script>
+
+</body>
+</html>
