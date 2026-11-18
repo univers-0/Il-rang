@@ -1,0 +1,28 @@
+name: Rappels IL Rang
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # toutes les 15 min ; le script n'envoie qu'aux deux heures choisies
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Envoyer un rappel tout de suite (test)"
+        type: boolean
+        default: true
+
+concurrency: rappels
+
+jobs:
+  rappel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-save --prefix scripts web-push@3.6.7
+      - run: node scripts/rappel.mjs
+        env:
+          RAPPELS: ${{ secrets.RAPPELS }}
+          FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.test && '1' || '' }}

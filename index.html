@@ -107,7 +107,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 /* Tab bar */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.tabs-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tabs-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .tab{background:none;border:none;border-radius:12px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;color:var(--muted)}
 .tab svg{width:22px;height:22px}
 .tab[aria-selected="true"]{color:var(--accent);background:var(--panel)}
@@ -124,6 +124,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .float{position:fixed;z-index:25;pointer-events:none;font-family:var(--display);font-weight:700;font-size:20px;color:var(--good);animation:rise .9s ease-out forwards}
 @keyframes rise{from{transform:translateY(0);opacity:1}to{transform:translateY(-46px);opacity:0}}
 .sync{font-size:12px;color:var(--muted);text-align:center}
+.card2{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.times{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.times label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.times input{background:var(--bg);border:1px solid var(--line);border-radius:12px;color:var(--fg);padding:12px;font:inherit;font-family:var(--display);font-size:22px;font-weight:700}
+.note{font-size:13px;color:var(--muted);margin:0}
+.note.warn{color:#ffb86b}
+.note.ok{color:var(--good)}
+#pushCode{width:100%;min-height:90px;background:var(--bg);border:1px solid var(--line);border-radius:12px;color:var(--fg);padding:10px;font:12px ui-monospace,Menlo,monospace;resize:vertical;word-break:break-all}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -184,6 +192,27 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
   </section>
 
+  <!-- Rappels -->
+  <section id="view-remind" class="view" hidden style="flex-direction:column;gap:14px">
+    <div class="head"><h2>Rappels</h2><span class="sub" id="remindSub">Désactivés</span></div>
+    <p class="note">À ces deux heures, si des missions du jour ne sont pas validées, ton téléphone te le rappelle avec la liste.</p>
+    <div class="card2">
+      <div class="times">
+        <label for="t1">1er rappel<input type="time" id="t1" value="14:00"></label>
+        <label for="t2">2e rappel<input type="time" id="t2" value="21:00"></label>
+      </div>
+      <p class="note" id="pushHint"></p>
+      <button class="btn" id="pushOn" type="button">Activer les rappels</button>
+      <button class="btn ghost" id="pushTest" type="button">Tester une notification</button>
+    </div>
+    <div class="card2" id="codeZone" hidden>
+      <b>Dernière étape : ton code de rappel</b>
+      <p class="note">Copie ce code et colle-le sur GitHub dans un secret nommé <b>RAPPELS</b> (voir le guide). Si tu changes les heures, recopie le nouveau code.</p>
+      <textarea id="pushCode" readonly aria-label="Code de rappel"></textarea>
+      <button class="btn" id="pushCopy" type="button">Copier le code</button>
+    </div>
+  </section>
+
   <div class="sync" id="sync"></div>
 </div>
 
@@ -195,6 +224,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.6 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg>Rangs</button>
     <button class="tab" role="tab" data-v="history" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Historique</button>
+    <button class="tab" role="tab" data-v="remind" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Rappels</button>
   </div>
 </nav>
 
@@ -371,7 +402,69 @@ function commit(){
   S.updatedAt=Date.now();
   try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
   render();
+  mirror();
 }
+/* Copie l'état pour le service worker (il ne peut pas lire localStorage) : il s'en sert pour savoir ce qui manque au moment du rappel */
+function mirror(){try{if(!("caches" in window))return;const days={};for(let i=0;i<2;i++){const d=new Date();d.setDate(d.getDate()-i);const k=dayKey(d);if(S.days[k])days[k]=S.days[k]}
+  caches.open("ilrang-state").then(c=>c.put("./state.json",new Response(JSON.stringify({missions:S.missions,days}),{headers:{"Content-Type":"application/json"}}))).catch(()=>{})}catch(e){}}
+
+/* ---------- Rappels (Web Push) ---------- */
+const PK="ilRangPush";
+let P={t1:"14:00",t2:"21:00",keys:null,sub:null};
+try{Object.assign(P,JSON.parse(localStorage.getItem(PK)||"{}"))}catch(e){}
+function saveP(){try{localStorage.setItem(PK,JSON.stringify(P))}catch(e){}}
+const b64u=buf=>btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const unb64u=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((s.length+3)%4)),c=>c.charCodeAt(0));
+const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const pushOk=()=>"serviceWorker" in navigator&&"PushManager" in window&&"Notification" in window;
+function remaining(){const day=S.days[dayKey()]||{done:{}};return todays().filter(m=>!(m.id in (day.done||{})))}
+function codeText(){return JSON.stringify({s:P.sub,k:P.keys,t:[P.t1,P.t2],tz:Intl.DateTimeFormat().resolvedOptions().timeZone})}
+function renderRemind(){
+  $("t1").value=P.t1;$("t2").value=P.t2;
+  const on=!!P.sub&&typeof Notification!=="undefined"&&Notification.permission==="granted";
+  $("remindSub").textContent=on?`${P.t1} · ${P.t2}`:"Désactivés";
+  const h=$("pushHint");h.className="note";
+  if(!pushOk()){h.textContent=/iPhone|iPad/.test(navigator.userAgent)&&!standalone()?"Sur iPhone, ouvre l'appli depuis l'icône de l'écran d'accueil pour activer les rappels (iOS 16.4 minimum).":"Ce navigateur ne gère pas les notifications. Utilise Safari (iPhone) ou Chrome (Android).";h.classList.add("warn")}
+  else if(typeof Notification!=="undefined"&&Notification.permission==="denied"){h.textContent="Notifications bloquées. Autorise-les dans les réglages du téléphone pour IL Rang, puis reviens ici.";h.classList.add("warn")}
+  else if(on){h.textContent="Rappels activés sur ce téléphone.";h.classList.add("ok")}
+  else h.textContent="Choisis tes deux heures puis active.";
+  $("pushOn").textContent=on?"Mettre à jour les rappels":"Activer les rappels";
+  $("pushOn").disabled=!pushOk();
+  $("codeZone").hidden=!on;
+  if(on)$("pushCode").value=codeText();
+}
+async function enablePush(){
+  const h=$("pushHint");
+  try{
+    if(P.t1===P.t2){h.textContent="Choisis deux heures différentes.";h.className="note warn";return}
+    const perm=await Notification.requestPermission();
+    if(perm!=="granted"){renderRemind();return}
+    const reg=await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!P.keys||!sub){
+      if(sub)await sub.unsubscribe();
+      const kp=await crypto.subtle.generateKey({name:"ECDSA",namedCurve:"P-256"},true,["sign"]);
+      const pub=b64u(await crypto.subtle.exportKey("raw",kp.publicKey));
+      const priv=(await crypto.subtle.exportKey("jwk",kp.privateKey)).d;
+      P.keys={pub,priv};
+      sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:unb64u(pub)});
+    }
+    P.sub=sub.toJSON();saveP();mirror();renderRemind();
+    $("codeZone").scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(e){h.textContent="Activation impossible : "+(e&&e.message||e);h.className="note warn"}
+}
+async function testPush(){
+  try{
+    if(Notification.permission!=="granted"&&(await Notification.requestPermission())!=="granted"){renderRemind();return}
+    const reg=await navigator.serviceWorker.ready,r=remaining();
+    await reg.showNotification("IL Rang",{body:r.length?`Il te reste ${r.length} mission${r.length>1?"s":""} : ${r.map(m=>m.n).join(", ")}`:"Toutes tes missions du jour sont validées.",icon:"icons/icon-192.png",badge:"icons/icon-192.png",tag:"rappel"});
+  }catch(e){$("pushHint").textContent="Test impossible : "+(e&&e.message||e);$("pushHint").className="note warn"}
+}
+$("t1").onchange=e=>{P.t1=e.target.value||"14:00";saveP();renderRemind()};
+$("t2").onchange=e=>{P.t2=e.target.value||"21:00";saveP();renderRemind()};
+$("pushOn").onclick=enablePush;
+$("pushTest").onclick=testPush;
+$("pushCopy").onclick=()=>{const t=$("pushCode");navigator.clipboard.writeText(t.value).then(()=>{$("pushCopy").textContent="Copié ✓";setTimeout(()=>$("pushCopy").textContent="Copier le code",1500)}).catch(()=>{t.focus();t.select()})};
 function setSync(t){$("sync").textContent=t}
 
 $("editBtn").onclick=()=>{editing=!editing;renderMissions()};
@@ -390,6 +483,8 @@ document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
 });
 
 render();
+renderRemind();
+mirror();
 setSync("Progression sauvegardée sur ce téléphone");
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 
