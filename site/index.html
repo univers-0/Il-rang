@@ -150,9 +150,9 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 .photo-title .orb{display:inline-grid;place-items:center;width:.82em;height:.82em;border-radius:50%;background:#fff;color:#1a0b08}
 .photo-title .orb svg{width:.42em;height:.42em}
 .photos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:64px}
-.photos .media{aspect-ratio:3/4!important}
-.photos .media:first-child{grid-column:1/-1;aspect-ratio:4/3!important}
-@media(min-width:900px){.photos{grid-template-columns:repeat(3,1fr);gap:20px}.photos .media:first-child{grid-column:auto;aspect-ratio:3/4!important}}
+.photos .media{aspect-ratio:3/4}
+.photos .media:first-child{grid-column:1/-1;aspect-ratio:4/5}
+@media(min-width:900px){.photos{grid-template-columns:repeat(4,1fr);gap:20px}.photos .media:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}}
 
 /* Matériel (liste) */
 .gear{list-style:none;margin:56px 0 0;padding:0;border-top:1.5px solid var(--line-2)}
@@ -271,7 +271,7 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
   <!-- BIENVENUE -->
   <section class="welcome">
     <div class="wrap welcome-grid">
-      <div class="media portrait reveal"><img src="media/ivan-hero.jpg" alt="Ivan, créateur UGC" style="object-position:50% 78%"><div class="ph">Ivan<small>media/ivan-hero.jpg</small></div></div>
+      <div class="media portrait reveal"><img src="media/ivan-hero.jpg" alt="Ivan, créateur UGC" style="object-position:50% 40%"><div class="ph">Ivan<small>media/ivan-hero.jpg</small></div></div>
       <div>
         <h2 class="reveal" data-i18n="w-title">Bienvenue dans mon univers</h2>
         <p class="big-lead reveal" data-i18n="w-lead">Ce qui me fait avancer, c'est de créer des connexions authentiques et de mettre en avant des marques qui me parlent vraiment.</p>
@@ -335,9 +335,11 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
     <div class="wrap">
       <h2 class="photo-title reveal"><span data-i18n="p-a">Ma vie</span> <span class="orb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></span> <span data-i18n="p-b">en images</span></h2>
       <div class="photos">
-        <div class="media reveal" style="aspect-ratio:4/5"><img src="media/photo-1.jpg" alt="Sac de voyage et trousse en denim"><div class="ph">Photo 1<small>media/photo-1.jpg</small></div></div>
-        <div class="media reveal" style="aspect-ratio:1/1"><img src="media/photo-2.jpg" alt="Montre Felli Watches cadran vert dans son écrin"><div class="ph">Photo 2<small>media/photo-2.jpg</small></div></div>
-        <div class="media reveal" style="aspect-ratio:3/4"><img src="media/photo-3.jpg" alt="Parfum Vanilla Powdery de Loui Martin"><div class="ph">Photo 3<small>media/photo-3.jpg</small></div></div>
+        <div class="media reveal"><img src="media/photo-1.jpg" alt="Ivan au-dessus de Genève"><div class="ph">photo-1<small>media/photo-1.jpg</small></div></div>
+        <div class="media reveal"><img src="media/photo-2.jpg" alt="Ivan en studio, fond blanc"><div class="ph">photo-2<small>media/photo-2.jpg</small></div></div>
+        <div class="media reveal"><img src="media/photo-3.jpg" alt="Sac de voyage et trousse en denim"><div class="ph">photo-3<small>media/photo-3.jpg</small></div></div>
+        <div class="media reveal"><img src="media/photo-4.jpg" alt="Montre Felli Watches cadran vert dans son écrin"><div class="ph">photo-4<small>media/photo-4.jpg</small></div></div>
+        <div class="media reveal"><img src="media/photo-5.jpg" alt="Parfum Vanilla Powdery de Loui Martin"><div class="ph">photo-5<small>media/photo-5.jpg</small></div></div>
       </div>
       <ul class="gear reveal">
         <li>DJI Osmo Pocket 3 <span data-i18n="g1">Image stabilisée</span></li>
