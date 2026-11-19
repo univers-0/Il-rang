@@ -75,6 +75,10 @@ h2{font-size:clamp(30px,5vw,48px)}
 .icon svg{width:22px;height:22px}
 .card h3{font-size:22px}
 .card p{margin:0;color:var(--muted);font-size:15.5px}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.gear{margin-top:40px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.gear h3{font-size:20px}
+.gear .tags{margin:0}
 
 /* Process */
 .steps{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:s}
@@ -123,6 +127,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <a href="#top" class="logo">Ivan<span>.</span></a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
+      <li><a href="#videos">Vidéos</a></li>
       <li><a href="#methode">Méthode</a></li>
       <li><a href="#apropos">À propos</a></li>
     </ul>
@@ -133,9 +138,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 <main>
   <!-- HERO -->
   <div class="hero wrap">
-    <span class="eyebrow">Créateur UGC · Business · Réseaux</span>
+    <span class="eyebrow">Créateur de contenu UGC · Genève</span>
     <h1>Du contenu qui <em>arrête le scroll</em> et fait vendre.</h1>
-    <p class="lead">Je crée des vidéos UGC authentiques, montées avec des titres qui frappent, pour les marques qui veulent des résultats — pas juste des vues.</p>
+    <p class="lead">Je crée des vidéos UGC authentiques, montées avec des titres qui frappent, pour les marques qui veulent des résultats — pas juste des vues. En français et en anglais.</p>
     <div class="cta-row">
       <a href="https://ivanlorenz0.my.canva.site/" target="_blank" rel="noopener" class="btn btn-primary">Voir mon portfolio →</a>
       <a href="#contact" class="btn btn-ghost">Me contacter</a>
@@ -175,11 +180,32 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     </div>
   </section>
 
+  <!-- VIDEOS -->
+  <section id="videos">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">02 — Mes vidéos</span>
+        <h2>Les marques que j'ai mises en avant.</h2>
+        <p>Des marques mises en avant en vidéo UGC. Les vidéos complètes sont sur mon portfolio.</p>
+      </div>
+      <div class="grid four">
+        <article class="card reveal"><span class="kicker">Vidéo UGC</span><h3>Felli Watches</h3><p>Vidéo face cam.</p></article>
+        <article class="card reveal"><span class="kicker">Vidéo UGC</span><h3>Chak Aroma</h3><p>Vidéo face cam.</p></article>
+        <article class="card reveal"><span class="kicker">Vidéo UGC</span><h3>ARNTREAL</h3><p>Vidéo face cam.</p></article>
+        <article class="card reveal"><span class="kicker">Photo</span><h3>Lifestyle & terrain</h3><p>Shootings produits et lifestyle en extérieur.</p></article>
+      </div>
+      <div class="gear reveal">
+        <h3>Mon matériel</h3>
+        <div class="tags"><span class="tag">Ring light</span><span class="tag">DJI Osmo Pocket 3</span><span class="tag">Trépied</span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- METHODE -->
   <section id="methode">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="num">02 — Méthode</span>
+        <span class="num">03 — Méthode</span>
         <h2>Simple. Rapide. Carré.</h2>
       </div>
       <ol class="steps reveal">
@@ -208,15 +234,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   <section id="apropos">
     <div class="wrap about">
       <div class="sec-head reveal" style="margin:0">
-        <span class="num">03 — À propos</span>
+        <span class="num">04 — À propos</span>
         <h2>Moi, c'est Ivan.</h2>
       </div>
       <div class="reveal">
-        <p><strong>Créateur de contenu et entrepreneur.</strong> Je construis mon business entre création UGC, réseaux sociaux et développement d'équipe.</p>
-        <p>Ce que j'apprends sur le terrain — inviter, présenter, tenir une stratégie, connaître son système — je le mets dans chaque vidéo : un message clair, une intention, un appel à l'action.</p>
-        <p>Je travaille avec des marques qui veulent du contenu vrai, livré vite, et qui convertit.</p>
+        <p><strong>21 ans, basé à Genève.</strong> D'origine espagnole et péruvienne, bilingue français et anglais.</p>
+        <p>Passionné par tout ce que le monde a à offrir : le sport, la découverte de nouvelles saveurs, les voyages, les moments de détente au soleil — toujours dans une ambiance ensoleillée.</p>
+        <p>Grâce à ma personnalité joviale et ma capacité à créer des connexions authentiques, je sais captiver les audiences et instaurer un véritable climat de confiance.</p>
         <div class="tags">
-          <span class="tag">UGC</span><span class="tag">Montage vidéo</span><span class="tag">TikTok / Reels</span><span class="tag">Networking</span><span class="tag">Crypto</span><span class="tag">Trading</span>
+          <span class="tag">UGC</span><span class="tag">Montage vidéo</span><span class="tag">Français / Anglais</span><span class="tag">Sport</span><span class="tag">Voyages</span><span class="tag">Lifestyle</span>
         </div>
       </div>
     </div>
@@ -225,17 +251,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   <!-- CONTACT -->
   <section id="contact">
     <div class="wrap contact reveal">
-      <span class="num" style="color:var(--muted);font-size:14px">04 — Contact</span>
-      <h2>Une marque, un produit, une idée ?</h2>
+      <span class="num" style="color:var(--muted);font-size:14px">05 — Contact</span>
+      <h2>On travaille ensemble ?</h2>
       <p>Écris-moi en DM avec ton produit et ton objectif. Je te réponds avec une proposition.</p>
       <div class="cta-row" style="justify-content:center">
         <a href="https://ivanlorenz0.my.canva.site/" target="_blank" rel="noopener" class="btn btn-primary">Voir le portfolio</a>
       </div>
       <div class="socials">
-        <!-- TODO : remplacer les "#" par tes vrais liens -->
+        <!-- TODO : mettre le lien Instagram exact -->
         <a href="#" class="btn btn-ghost btn-sm todo-link" target="_blank" rel="noopener">Instagram</a>
-        <a href="#" class="btn btn-ghost btn-sm todo-link" target="_blank" rel="noopener">TikTok</a>
-        <a href="#" class="btn btn-ghost btn-sm todo-link" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </section>
