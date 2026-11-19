@@ -1,0 +1,11 @@
+Dépose ici les médias du site avec EXACTEMENT ces noms :
+
+ivan-hero.jpg       -> photo principale (haut de page)
+ivan-about.jpg      -> photo section "Qui suis-je"
+felli-watches.mp4   -> vidéo UGC Felli Watches (format vertical 9:16)
+chak-aroma.mp4      -> vidéo UGC Chak Aroma
+arntreal.mp4        -> vidéo UGC ARNTREAL
+photo-1.jpg ... photo-6.jpg -> photos "Lifestyle & terrain"
+
+Tant qu'un fichier manque, le site affiche un emplacement propre à la place.
+Vidéos : garde-les légères (idéalement < 15 Mo chacune).
