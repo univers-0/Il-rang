@@ -70,6 +70,13 @@ img,video{display:block;max-width:100%}
 .enter .arr{font-size:20px}
 .intro-title{transition:opacity .35s,transform .35s}
 .intro.dropping .intro-title{opacity:0;transform:translateY(-10px)}
+.wind{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.wind i{position:absolute;left:0;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(214,252,250,.9) 60%,transparent);animation:gust linear infinite}
+.wind b{position:absolute;left:0;border-radius:50%;background:#d9fffd;box-shadow:0 0 6px rgba(159,247,243,.9);animation:drift linear infinite}
+.wind.storm i{animation-duration:.9s!important;opacity:.85!important}
+.wind.storm b{animation-duration:2.2s!important}
+@keyframes gust{from{transform:translateX(-50vw)}to{transform:translateX(150vw)}}
+@keyframes drift{0%{transform:translate(-5vw,0)}25%{transform:translate(25vw,-14px)}50%{transform:translate(55vw,6px)}75%{transform:translate(85vw,-10px)}100%{transform:translate(110vw,0)}}
 .glass{position:fixed;inset:0;z-index:52;pointer-events:none;overflow:hidden}
 .glass .drop{position:absolute;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;
   background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.95) 0 5%,rgba(255,255,255,.35) 10%,rgba(255,255,255,.06) 40%,rgba(0,30,40,.22) 72%,rgba(255,255,255,.55) 90%,rgba(255,255,255,0) 100%);
@@ -188,7 +195,7 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease}
 .reveal.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.marquee-track,.intro .float{animation:none}main,.intro{transition:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.marquee-track,.intro .float,.wind i,.wind b{animation:none}.wind{display:none}main,.intro{transition:none}}
 </style>
 </head>
 <body class="locked">
@@ -245,6 +252,7 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
     <g clip-path="url(#below)" opacity=".5"><g filter="url(#ripple)"><use href="#world" transform="translate(0 1120) scale(1 -1)"/></g></g>
     <g fill="#d9fffd" opacity=".55" class="float"><circle cx="40" cy="120" r="1.4"/><circle cx="330" cy="90" r="1.2"/><circle cx="250" cy="300" r="1"/><circle cx="60" cy="430" r="1.3"/><circle cx="350" cy="470" r="1"/><circle cx="190" cy="160" r="1.1"/></g>
   </svg>
+  <div class="wind" id="wind" aria-hidden="true"><i style="top:83%;width:26vw;animation-duration:4.53s;animation-delay:-3.98s;opacity:0.58"></i><i style="top:87%;width:34vw;animation-duration:2.68s;animation-delay:-2.33s;opacity:0.58"></i><i style="top:87%;width:19vw;animation-duration:4.94s;animation-delay:-0.57s;opacity:0.41"></i><i style="top:35%;width:30vw;animation-duration:4.01s;animation-delay:-2.87s;opacity:0.25"></i><i style="top:31%;width:31vw;animation-duration:3.33s;animation-delay:-4.58s;opacity:0.52"></i><i style="top:24%;width:42vw;animation-duration:4.67s;animation-delay:-0.69s;opacity:0.47"></i><i style="top:20%;width:22vw;animation-duration:2.60s;animation-delay:-4.36s;opacity:0.32"></i><i style="top:31%;width:23vw;animation-duration:4.87s;animation-delay:-1.45s;opacity:0.59"></i><i style="top:73%;width:39vw;animation-duration:4.23s;animation-delay:-0.91s;opacity:0.59"></i><i style="top:29%;width:30vw;animation-duration:3.38s;animation-delay:-1.81s;opacity:0.31"></i><i style="top:22%;width:26vw;animation-duration:2.77s;animation-delay:-1.51s;opacity:0.46"></i><b style="top:5%;animation-duration:7.98s;animation-delay:-7.08s;width:2.2px;height:2.2px"></b><b style="top:50%;animation-duration:9.09s;animation-delay:-4.81s;width:2.8px;height:2.8px"></b><b style="top:66%;animation-duration:7.36s;animation-delay:-1.76s;width:2.6px;height:2.6px"></b><b style="top:7%;animation-duration:9.75s;animation-delay:-3.58s;width:3.0px;height:3.0px"></b><b style="top:75%;animation-duration:8.94s;animation-delay:-3.66s;width:3.4px;height:3.4px"></b><b style="top:6%;animation-duration:7.26s;animation-delay:-7.08s;width:3.6px;height:3.6px"></b><b style="top:30%;animation-duration:5.60s;animation-delay:-2.46s;width:4.0px;height:4.0px"></b><b style="top:64%;animation-duration:6.72s;animation-delay:-3.55s;width:3.3px;height:3.3px"></b><b style="top:64%;animation-duration:5.54s;animation-delay:-7.48s;width:4.0px;height:4.0px"></b><b style="top:42%;animation-duration:5.18s;animation-delay:-9.46s;width:2.2px;height:2.2px"></b><b style="top:48%;animation-duration:7.56s;animation-delay:-3.63s;width:2.4px;height:2.4px"></b><b style="top:40%;animation-duration:9.62s;animation-delay:-5.45s;width:2.8px;height:2.8px"></b><b style="top:45%;animation-duration:6.53s;animation-delay:-7.99s;width:3.6px;height:3.6px"></b><b style="top:44%;animation-duration:9.98s;animation-delay:-1.62s;width:2.1px;height:2.1px"></b><b style="top:81%;animation-duration:7.67s;animation-delay:-4.06s;width:2.6px;height:2.6px"></b><b style="top:81%;animation-duration:6.72s;animation-delay:-2.50s;width:3.6px;height:3.6px"></b></div>
   <div class="intro-title">
     <h1><em>UGC by</em>Ivan</h1>
     <button class="enter" type="button" id="enter"><span data-i18n="enter">Entrer dans mon univers</span> <span class="arr">↘</span></button>
@@ -394,33 +402,33 @@ function enter(){
   const finish=()=>{document.body.classList.add('entered');document.body.classList.remove('locked');intro.classList.add('gone');setHole(0,0,0);
     glass.style.transition='opacity .6s';glass.style.opacity='0';setTimeout(()=>{glass.innerHTML='';glass.style.display='none'},700)};
   if(reduce){finish();return}
-  intro.classList.add('dropping');
+  intro.classList.add('dropping');document.getElementById('wind').classList.add('storm');
   const W=innerWidth,H=innerHeight,sc=Math.max(W/390,H/844),oy=(H-844*sc)/2;
-  const x=W/2,y0=H*.34,wy=oy+600*sc;                 /* départ sur la vitre -> surface de l'eau */
-  const maxR=Math.hypot(Math.max(x,W-x),Math.max(wy,H-wy))+40;
+  const x=W*.42,y0=H*.34,wy=oy+600*sc,dx=W*.2,xi=x+dx;   /* le vent pousse la goutte vers la droite */                 /* départ sur la vitre -> surface de l'eau */
+  const maxR=Math.hypot(Math.max(xi,W-xi),Math.max(wy,H-wy))+40;
   const el=(c,st)=>{const d=document.createElement('div');d.className=c;Object.assign(d.style,st);glass.appendChild(d);return d};
   const drop=el('drop',{left:x+'px',top:y0+'px',opacity:0});
   const ripples=[0,1,2,3].map(()=>el('ripple',{opacity:0}));
-  const splash=[...Array(9)].map((_,i)=>({e:el('spl',{opacity:0}),vx:(i/8-.5)*240+(Math.random()-.5)*40,vy:-(150+Math.random()*120),s:3+Math.random()*4}));
+  const splash=[...Array(9)].map((_,i)=>({e:el('spl',{opacity:0}),vx:(i/8-.5)*200+140+(Math.random()-.5)*40,vy:-(150+Math.random()*120),s:3+Math.random()*4}));
   const ring=el('ring',{opacity:0});
   const FORM=260,FALL=640,IMP=FORM+FALL,t0=performance.now();
   const ease=p=>1-Math.pow(1-p,3),inout=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
   let hit=false;
   (function step(now){const t=now-t0;
     if(t<FORM){const p=t/FORM;          /* la goutte se forme sur la vitre */
-      drop.style.opacity=p;drop.style.transform=`scale(${1.5+Math.sin(p*Math.PI)*.12},${1.5-Math.sin(p*Math.PI)*.08})`}
+      const w=Math.sin(p*Math.PI*3)*4*(1-p);drop.style.opacity=p;drop.style.left=(x+w)+'px';drop.style.transform=`scale(${1.5+Math.sin(p*Math.PI)*.12},${1.5-Math.sin(p*Math.PI)*.08}) skewX(${-w*1.5}deg)`}
     else if(t<IMP){const p=(t-FORM)/FALL,k=p*p;   /* elle se décolle et plonge dans le décor */
-      const sx=1.5-1.38*k;drop.style.opacity=1;drop.style.top=(y0+(wy-y0)*k)+'px';
-      drop.style.transform=`scale(${sx*(1-.12*k)},${sx*(1+.35*k)})`;drop.style.filter=`blur(${k*.6}px)`}
+      const sx=1.5-1.38*k,gust=Math.sin(p*Math.PI*2.2)*W*.025;drop.style.opacity=1;drop.style.top=(y0+(wy-y0)*k)+'px';drop.style.left=(x+dx*Math.pow(p,1.3)+gust)+'px';
+      drop.style.transform=`rotate(${-18*Math.sin(p*Math.PI)}deg) scale(${sx*(1-.12*k)},${sx*(1+.35*k)})`;drop.style.filter=`blur(${k*.6}px)`}
     else{drop.style.opacity=0;
       if(!hit){hit=true;document.body.classList.add('entered');try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}}}
     ripples.forEach((r,i)=>{const p=(t-IMP-i*140)/1100;if(p<0||p>1){r.style.opacity=0;return}
       const rx=ease(p)*Math.max(W,H)*.8*(1-i*.1),ry=rx*.26;
-      r.style.cssText+=`;opacity:${(1-p)*.9};left:${x-rx}px;top:${wy-ry}px;width:${2*rx}px;height:${2*ry}px;border-width:${2.5*(1-p)+.6}px`});
+      r.style.cssText+=`;opacity:${(1-p)*.9};left:${xi+p*40-rx}px;top:${wy-ry}px;width:${2*rx}px;height:${2*ry}px;border-width:${2.5*(1-p)+.6}px`});
     splash.forEach(d=>{const k=(t-IMP)/1000;if(k<0||k>.55){d.e.style.opacity=0;return}
-      d.e.style.cssText+=`;opacity:${1-k/.55};width:${d.s}px;height:${d.s}px;left:${x+d.vx*k-d.s/2}px;top:${wy+d.vy*k+720*k*k-d.s/2}px`});
-    const hp=(t-IMP-220)/950,R=hp<=0?0:maxR*inout(Math.min(hp,1));setHole(x,wy,R);   /* l'eau monte et ouvre l'univers */
-    if(R>0){ring.style.cssText+=`;opacity:${Math.min(1,(1-hp)*1.6)};left:${x-R-14}px;top:${wy-R-14}px;width:${2*R+28}px;height:${2*R+28}px;--w:28px`}
+      d.e.style.cssText+=`;opacity:${1-k/.55};width:${d.s}px;height:${d.s}px;left:${xi+d.vx*k-d.s/2}px;top:${wy+d.vy*k+720*k*k-d.s/2}px`});
+    const hp=(t-IMP-220)/950,R=hp<=0?0:maxR*inout(Math.min(hp,1));setHole(xi,wy,R);   /* l'eau monte et ouvre l'univers */
+    if(R>0){ring.style.cssText+=`;opacity:${Math.min(1,(1-hp)*1.6)};left:${xi-R-14}px;top:${wy-R-14}px;width:${2*R+28}px;height:${2*R+28}px;--w:28px`}
     if(t<IMP+1250)requestAnimationFrame(step);else finish()})(t0);
 }
 document.getElementById('enter').addEventListener('click',()=>enter());
