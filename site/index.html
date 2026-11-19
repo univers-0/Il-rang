@@ -80,6 +80,8 @@ img,video{display:block;max-width:100%}
   -webkit-mask:radial-gradient(closest-side,transparent calc(100% - var(--w)),#000 calc(100% - var(--w) + 1px),#000 calc(100% - 2px),transparent 100%);
           mask:radial-gradient(closest-side,transparent calc(100% - var(--w)),#000 calc(100% - var(--w) + 1px),#000 calc(100% - 2px),transparent 100%);
   background:radial-gradient(closest-side,transparent calc(100% - var(--w)),rgba(255,255,255,.10) calc(100% - 6px),rgba(255,255,255,.45) calc(100% - 2px),transparent 100%)}
+.glass .ripple{position:absolute;border-radius:50%;border:2px solid rgba(214,252,250,.9);box-shadow:0 0 12px rgba(50,230,226,.35)}
+.glass .spl{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#9ff7f3 60%,#32e6e2)}
 .glass .bead{position:absolute;border-radius:50%;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.9) 0 8%,rgba(255,255,255,.15) 30%,rgba(255,255,255,.4) 88%,transparent 100%);
   -webkit-backdrop-filter:blur(1px) brightness(1.15);backdrop-filter:blur(1px) brightness(1.15);box-shadow:0 2px 5px rgba(0,0,0,.3)}
 
@@ -384,7 +386,7 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 document.querySelectorAll('.yr').forEach(e=>e.textContent=new Date().getFullYear());
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ---- Entrée : goutte d'eau qui tombe sur l'écran ---- */
+/* ---- Entrée : goutte qui part de l'écran et tombe dans l'eau du décor ---- */
 const intro=document.getElementById('intro'),glass=document.getElementById('glass');
 function setHole(x,y,r){const m=r<=0?'none':`radial-gradient(circle at ${x}px ${y}px, transparent ${r}px, #000 ${r+1.5}px)`;intro.style.webkitMaskImage=m;intro.style.maskImage=m}
 function enter(){
@@ -393,28 +395,33 @@ function enter(){
     glass.style.transition='opacity .6s';glass.style.opacity='0';setTimeout(()=>{glass.innerHTML='';glass.style.display='none'},700)};
   if(reduce){finish();return}
   intro.classList.add('dropping');
-  const W=innerWidth,H=innerHeight,x=W/2,y=H*.46,maxR=Math.hypot(Math.max(x,W-x),Math.max(y,H-y))+40;
+  const W=innerWidth,H=innerHeight,sc=Math.max(W/390,H/844),oy=(H-844*sc)/2;
+  const x=W/2,y0=H*.34,wy=oy+600*sc;                 /* départ sur la vitre -> surface de l'eau */
+  const maxR=Math.hypot(Math.max(x,W-x),Math.max(wy,H-wy))+40;
   const el=(c,st)=>{const d=document.createElement('div');d.className=c;Object.assign(d.style,st);glass.appendChild(d);return d};
-  const drop=el('drop',{left:x+'px',top:y+'px',opacity:0});
-  const rings=[0,1,2].map(i=>el('ring',{opacity:0}));
-  const beads=[...Array(7)].map(()=>{const a=Math.random()*Math.PI*2,d=60+Math.random()*Math.min(W,H)*.38,sz=6+Math.random()*12;
-    return {e:el('bead',{width:sz+'px',height:sz+'px',left:(x+Math.cos(a)*d-sz/2)+'px',top:(y+Math.sin(a)*d-sz/2)+'px',opacity:0}),t:Math.random()*120}});
-  const IMP=520,t0=performance.now();
+  const drop=el('drop',{left:x+'px',top:y0+'px',opacity:0});
+  const ripples=[0,1,2,3].map(()=>el('ripple',{opacity:0}));
+  const splash=[...Array(9)].map((_,i)=>({e:el('spl',{opacity:0}),vx:(i/8-.5)*240+(Math.random()-.5)*40,vy:-(150+Math.random()*120),s:3+Math.random()*4}));
+  const ring=el('ring',{opacity:0});
+  const FORM=260,FALL=640,IMP=FORM+FALL,t0=performance.now();
   const ease=p=>1-Math.pow(1-p,3),inout=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
   let hit=false;
   (function step(now){const t=now-t0;
-    if(t<IMP){const p=t/IMP,k=p*p;   /* la goutte arrive vers l'écran */
-      drop.style.opacity=Math.min(1,p*2.2);drop.style.transform=`scale(${.12+.88*k})`;drop.style.filter=`blur(${(1-k)*7}px)`}
-    else{ if(!hit){hit=true;document.body.classList.add('entered');try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}
-        intro.animate([{transform:'translate(0,0)'},{transform:'translate(0,3px)'},{transform:'translate(0,-2px)'},{transform:'translate(0,0)'}],{duration:180})}
-      const q=(t-IMP)/260, sq=q<1?Math.sin(q*Math.PI)*(1-q):0;  /* écrasement sur la vitre */
-      drop.style.filter='none';drop.style.transform=`scale(${1+sq*.45},${1-sq*.3})`;
-      drop.style.opacity=t>IMP+700?Math.max(0,1-(t-IMP-700)/450):1;}
-    rings.forEach((r,i)=>{const p=(t-IMP-i*170)/1150;if(p<0||p>1){r.style.opacity=0;return}
-      const R=ease(p)*maxR*(1.05-i*.08),w=18+30*p;r.style.cssText+=`;opacity:${1-p*.85};left:${x-R}px;top:${y-R}px;width:${2*R}px;height:${2*R}px;--w:${w}px`});
-    beads.forEach(b=>{const p=(t-IMP-b.t)/900;b.e.style.opacity=p<0?0:p<.25?p/.25:Math.max(0,1-(p-.6)/.4)});
-    const hp=(t-IMP-120)/1000;setHole(x,y,hp<=0?0:maxR*inout(Math.min(hp,1)));
-    if(t<IMP+1350)requestAnimationFrame(step);else finish()})(t0);
+    if(t<FORM){const p=t/FORM;          /* la goutte se forme sur la vitre */
+      drop.style.opacity=p;drop.style.transform=`scale(${1.5+Math.sin(p*Math.PI)*.12},${1.5-Math.sin(p*Math.PI)*.08})`}
+    else if(t<IMP){const p=(t-FORM)/FALL,k=p*p;   /* elle se décolle et plonge dans le décor */
+      const sx=1.5-1.38*k;drop.style.opacity=1;drop.style.top=(y0+(wy-y0)*k)+'px';
+      drop.style.transform=`scale(${sx*(1-.12*k)},${sx*(1+.35*k)})`;drop.style.filter=`blur(${k*.6}px)`}
+    else{drop.style.opacity=0;
+      if(!hit){hit=true;document.body.classList.add('entered');try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}}}
+    ripples.forEach((r,i)=>{const p=(t-IMP-i*140)/1100;if(p<0||p>1){r.style.opacity=0;return}
+      const rx=ease(p)*Math.max(W,H)*.8*(1-i*.1),ry=rx*.26;
+      r.style.cssText+=`;opacity:${(1-p)*.9};left:${x-rx}px;top:${wy-ry}px;width:${2*rx}px;height:${2*ry}px;border-width:${2.5*(1-p)+.6}px`});
+    splash.forEach(d=>{const k=(t-IMP)/1000;if(k<0||k>.55){d.e.style.opacity=0;return}
+      d.e.style.cssText+=`;opacity:${1-k/.55};width:${d.s}px;height:${d.s}px;left:${x+d.vx*k-d.s/2}px;top:${wy+d.vy*k+720*k*k-d.s/2}px`});
+    const hp=(t-IMP-220)/950,R=hp<=0?0:maxR*inout(Math.min(hp,1));setHole(x,wy,R);   /* l'eau monte et ouvre l'univers */
+    if(R>0){ring.style.cssText+=`;opacity:${Math.min(1,(1-hp)*1.6)};left:${x-R-14}px;top:${wy-R-14}px;width:${2*R+28}px;height:${2*R+28}px;--w:28px`}
+    if(t<IMP+1250)requestAnimationFrame(step);else finish()})(t0);
 }
 document.getElementById('enter').addEventListener('click',()=>enter());
 /* Lien direct vers une section : on saute l'entrée */
