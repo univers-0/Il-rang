@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>UGC by Ivan</title>
 <meta name="description" content="Ivan, 21 ans, créateur de contenu UGC basé à Genève. Bilingue français / anglais.">
-<meta name="theme-color" content="#7e2346">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%237e2346'/%3E%3Ccircle cx='32' cy='30' r='12' fill='%23f6b3a6'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0f3540">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%230b1a21'/%3E%3Ccircle cx='32' cy='30' r='12' fill='%2332e6e2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
@@ -15,8 +15,8 @@
    puis univers sombre prune avec couloir d'arches. Thème sombre unique par choix.
    Médias : dépose tes fichiers dans site/media/ (voir media/LISEZMOI.txt). */
 :root{
-  --bg:#0c0610; --plum:#1a0818; --plum-2:#240b21; --line:rgba(255,235,243,.16); --line-2:rgba(255,235,243,.32);
-  --fg:#fbeef3; --muted:#b39aa8; --dim:#7d6573; --pink:#f28bb0; --rose:#7e2346;
+  --bg:#0b1a21; --plum:#0e2129; --plum-2:#132a33; --line:rgba(230,250,250,.14); --line-2:rgba(230,250,250,.28);
+  --fg:#eef6f7; --muted:#97aeb5; --dim:#5d7880; --pink:#32e6e2; --rose:#0f3540;
   --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif; --serif:"Instrument Serif",Georgia,serif;
   color-scheme:dark;
 }
@@ -36,20 +36,20 @@ img,video{display:block;max-width:100%}
 @media(min-width:720px){.ui-top{padding-inline:32px}}
 .ui-top>*{pointer-events:auto}
 .brand{font-weight:500;font-size:22px;letter-spacing:-.04em;text-decoration:none}
-.dots{width:56px;height:56px;border-radius:50%;border:none;background:#fff;color:#14060f;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.25);transition:transform .2s}
+.dots{width:56px;height:56px;border-radius:50%;border:none;background:#fff;color:#04151a;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.25);transition:transform .2s}
 .dots:hover{transform:scale(1.06)}
 .dots i{display:flex;gap:5px}.dots i::before,.dots i::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;transition:transform .3s}
 .dots[aria-expanded="true"] i::before{transform:translateX(5.5px)}.dots[aria-expanded="true"] i::after{transform:translateX(-5.5px)}
 .ui-bottom{position:fixed;inset:auto 0 0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:0 16px max(16px,env(safe-area-inset-bottom));pointer-events:none;font-size:14px}
 @media(min-width:720px){.ui-bottom{padding-inline:32px}}
 .ui-bottom>*{pointer-events:auto}
-.lang{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;border:1.5px solid var(--fg);background:rgba(12,6,16,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.lang{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;border:1.5px solid var(--fg);background:rgba(11,26,33,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .lang button{border:none;background:none;color:var(--fg);font:500 15px var(--sans);padding:0;cursor:pointer;opacity:.45}
 .lang button[aria-pressed="true"]{opacity:1}
 .lang span{opacity:.6}
 
 /* Menu plein écran */
-.menu{position:fixed;inset:0;z-index:55;background:linear-gradient(160deg,#3a0f2c,#14060f 70%);display:grid;align-content:center;padding:100px 24px;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.menu{position:fixed;inset:0;z-index:55;background:linear-gradient(160deg,#0f3a40,#071319 70%);display:grid;align-content:center;padding:100px 24px;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .menu.open{opacity:1;visibility:visible}
 .menu nav{display:grid;gap:6px;max-width:1100px;margin:0 auto;width:100%}
 .menu a{font-size:clamp(40px,9vw,84px);font-weight:500;letter-spacing:-.05em;line-height:1.08;text-decoration:none;opacity:.85;transition:opacity .2s,color .2s}
@@ -57,23 +57,23 @@ img,video{display:block;max-width:100%}
 .menu a em{font-family:var(--serif);font-weight:400}
 
 /* ---------- Entrée en scène ---------- */
-.intro{position:fixed;inset:0;z-index:50;overflow:hidden;background:#7e2346;transition:opacity .6s}
+.intro{position:fixed;inset:0;z-index:50;overflow:hidden;background:#0f3540;transition:opacity .6s}
 .intro.gone{opacity:0;visibility:hidden}
 .intro svg.scene{position:absolute;inset:0;width:100%;height:100%}
 .intro .float{animation:float 9s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-6px)}}
 .intro-title{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;padding:24px;gap:28px}
-.intro-title h1{margin:0;font-weight:500;letter-spacing:-.06em;line-height:.9;font-size:clamp(64px,17vw,168px);text-shadow:0 4px 40px rgba(60,6,30,.35)}
+.intro-title h1{margin:0;font-weight:500;letter-spacing:-.06em;line-height:.9;font-size:clamp(64px,17vw,168px);text-shadow:0 4px 40px rgba(2,20,26,.45)}
 .intro-title h1 em{display:block;font-family:var(--serif);font-weight:400;letter-spacing:-.02em;font-size:.62em;line-height:1;margin-bottom:.05em}
-.enter{display:inline-flex;align-items:center;gap:14px;padding:20px 34px;border-radius:999px;border:none;background:#fff;color:#14060f;font:500 19px var(--sans);letter-spacing:-.02em;cursor:pointer;box-shadow:0 10px 40px rgba(60,6,30,.35);transition:transform .2s}
+.enter{display:inline-flex;align-items:center;gap:14px;padding:20px 34px;border-radius:999px;border:none;background:#fff;color:#04151a;font:500 19px var(--sans);letter-spacing:-.02em;cursor:pointer;box-shadow:0 10px 40px rgba(2,20,26,.45);transition:transform .2s}
 .enter:hover{transform:translateY(-2px)}
 .enter .arr{font-size:20px}
 .ink{position:fixed;inset:0;z-index:52;width:100%;height:100%;pointer-events:none}
 
 /* ---------- Univers (fond couloir) ---------- */
-.corridor{position:fixed;inset:0;z-index:-1;background:radial-gradient(70% 50% at 50% 42%,#1d0a1b,transparent 70%),linear-gradient(#0c0610 0%,#160716 55%,#22071c 100%)}
+.corridor{position:fixed;inset:0;z-index:-1;background:radial-gradient(70% 50% at 50% 42%,rgba(50,230,226,.08),transparent 70%),linear-gradient(#0b1a21 0%,#0d2129 55%,#0f2a33 100%)}
 .corridor svg{position:absolute;inset:0;width:100%;height:100%}
-.corridor::after{content:"";position:absolute;inset:auto 0 0;height:42%;background:linear-gradient(transparent,rgba(48,8,38,.6))}
+.corridor::after{content:"";position:absolute;inset:auto 0 0;height:42%;background:linear-gradient(transparent,rgba(12,52,60,.55))}
 main{opacity:0;transition:opacity .9s}
 body.entered main{opacity:1}
 
@@ -84,10 +84,10 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 .center{text-align:center}
 
 /* Média + repli */
-.media{position:relative;overflow:hidden;border-radius:6px;background:radial-gradient(120% 80% at 30% 20%,#5a1840,transparent 65%),radial-gradient(120% 80% at 80% 90%,#3a1450,transparent 60%),#1d0919}
+.media{position:relative;overflow:hidden;border-radius:6px;background:radial-gradient(120% 80% at 30% 20%,#13505a,transparent 65%),radial-gradient(120% 80% at 80% 90%,#0e3a52,transparent 60%),#0f232b}
 .media img,.media video{width:100%;height:100%;object-fit:cover}
-.media .ph{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:4px;text-align:center;padding:16px;color:rgba(251,238,243,.8);font-size:19px;font-weight:500;letter-spacing:-.03em}
-.media .ph small{font-size:11px;font-family:ui-monospace,monospace;letter-spacing:0;color:rgba(251,238,243,.45)}
+.media .ph{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:4px;text-align:center;padding:16px;color:rgba(238,246,247,.8);font-size:19px;font-weight:500;letter-spacing:-.03em}
+.media .ph small{font-size:11px;font-family:ui-monospace,monospace;letter-spacing:0;color:rgba(238,246,247,.45)}
 .media.loaded .ph{display:none}
 
 /* Bienvenue */
@@ -113,7 +113,7 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex:none;border:none;background:none;color:var(--fg);font:500 17px var(--sans);letter-spacing:-.02em;padding:11px 22px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .tab small{font-size:12px;margin-left:4px;opacity:.7}
-.tab[aria-pressed="true"]{background:#fff;color:#14060f}
+.tab[aria-pressed="true"]{background:#fff;color:#04151a}
 .videos{display:grid;grid-template-columns:1fr 1fr;gap:56px 24px}
 @media(min-width:900px){.videos{grid-template-columns:repeat(3,1fr);gap:72px 32px}}
 .vcard{transition:opacity .45s,filter .45s}
@@ -138,7 +138,7 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 
 /* Photos */
 .photo-title{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.18em;font-size:clamp(48px,11vw,128px)}
-.photo-title .orb{display:inline-grid;place-items:center;width:.82em;height:.82em;border-radius:50%;background:#fff;color:#14060f}
+.photo-title .orb{display:inline-grid;place-items:center;width:.82em;height:.82em;border-radius:50%;background:#fff;color:#04151a}
 .photo-title .orb svg{width:.42em;height:.42em}
 .photos{columns:2;column-gap:14px;margin-top:64px}
 @media(min-width:900px){.photos{columns:3;column-gap:20px}}
@@ -165,9 +165,9 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 .contact p{margin:0;color:var(--muted);max-width:40ch;font-size:clamp(18px,2.2vw,22px)}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:16px;padding:22px 40px;border-radius:999px;font-size:clamp(18px,2.2vw,22px);font-weight:500;letter-spacing:-.03em;text-decoration:none;transition:transform .2s,background .2s,color .2s;max-width:100%}
 .pill:hover{transform:translateY(-2px)}
-.pill.solid{background:#fff;color:#14060f}
+.pill.solid{background:#fff;color:#04151a}
 .pill.line{border:1.5px solid var(--fg)}
-.pill.line:hover{background:var(--fg);color:#14060f}
+.pill.line:hover{background:var(--fg);color:#04151a}
 .small-links{display:flex;gap:28px;margin-top:12px;color:var(--muted);font-size:16px}
 .small-links a{text-decoration:none}.small-links a:hover{color:var(--fg)}
 
@@ -202,11 +202,11 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 <div class="intro" id="intro">
   <svg class="scene" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
-      <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#76203f"/><stop offset="1" stop-color="#8d2c4f"/></linearGradient>
-      <linearGradient id="beam" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f09aae"/><stop offset="1" stop-color="#d8708c"/></linearGradient>
-      <linearGradient id="lav" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9b2f2"/><stop offset="1" stop-color="#7a5fc0"/></linearGradient>
-      <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a1a3c"/><stop offset="1" stop-color="#3a0a22"/></linearGradient>
-      <radialGradient id="sun"><stop offset="0" stop-color="#ffd2bf"/><stop offset=".7" stop-color="#f6a99a"/><stop offset="1" stop-color="#f6a99a" stop-opacity="0"/></radialGradient>
+      <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c2c36"/><stop offset="1" stop-color="#11404b"/></linearGradient>
+      <linearGradient id="beam" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ff3ef"/><stop offset="1" stop-color="#22b9b6"/></linearGradient>
+      <linearGradient id="lav" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c6fbf8"/><stop offset="1" stop-color="#2f8fb0"/></linearGradient>
+      <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d3640"/><stop offset="1" stop-color="#061a20"/></linearGradient>
+      <radialGradient id="sun"><stop offset="0" stop-color="#f2fffe"/><stop offset=".7" stop-color="#9ff7f3"/><stop offset="1" stop-color="#9ff7f3" stop-opacity="0"/></radialGradient>
       <filter id="ripple" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".004 .09" numOctaves="2" seed="4"><animate attributeName="baseFrequency" dur="14s" values=".004 .09;.006 .11;.004 .09" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" scale="14"/></filter>
       <clipPath id="above"><rect width="390" height="560"/></clipPath>
       <clipPath id="below"><rect y="560" width="390" height="284"/></clipPath>
@@ -214,46 +214,46 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
         <rect width="390" height="560" fill="url(#wall)"/>
         <polygon points="214,0 390,0 390,420 300,560 268,560" fill="url(#beam)" opacity=".9"/>
         <circle cx="118" cy="214" r="74" fill="url(#sun)"/>
-        <circle cx="118" cy="214" r="46" fill="#ffcdb8"/>
-        <path d="M14 560V352a40 40 0 0 1 80 0V560Z" fill="#a1385f"/>
+        <circle cx="118" cy="214" r="46" fill="#e6fffd"/>
+        <path d="M14 560V352a40 40 0 0 1 80 0V560Z" fill="#1a5560"/>
         <path d="M26 560V356a28 28 0 0 1 56 0V560Z" fill="url(#lav)"/>
-        <rect x="296" y="236" width="70" height="118" fill="#a1385f"/>
+        <rect x="296" y="236" width="70" height="118" fill="#1a5560"/>
         <rect x="304" y="244" width="54" height="102" fill="url(#lav)"/>
-        <rect x="0" y="512" width="390" height="48" fill="#9b335a"/>
-        <g fill="#6c1938"><rect x="150" y="452" width="118" height="20"/><rect x="142" y="472" width="134" height="20" fill="#7d2244"/><rect x="134" y="492" width="150" height="20"/><rect x="126" y="512" width="166" height="24" fill="#7d2244"/><rect x="118" y="536" width="182" height="24"/></g>
-        <rect x="150" y="440" width="118" height="12" fill="#a8406a"/>
-        <line x1="70" y1="0" x2="70" y2="352" stroke="#ffd0dc" stroke-opacity=".25" stroke-width="1.5"/>
+        <rect x="0" y="512" width="390" height="48" fill="#17505b"/>
+        <g fill="#0a2830"><rect x="150" y="452" width="118" height="20"/><rect x="142" y="472" width="134" height="20" fill="#0e333d"/><rect x="134" y="492" width="150" height="20"/><rect x="126" y="512" width="166" height="24" fill="#0e333d"/><rect x="118" y="536" width="182" height="24"/></g>
+        <rect x="150" y="440" width="118" height="12" fill="#1f6370"/>
+        <line x1="70" y1="0" x2="70" y2="352" stroke="#c6fbf8" stroke-opacity=".25" stroke-width="1.5"/>
       </g>
     </defs>
     <use href="#world" clip-path="url(#above)"/>
     <rect y="560" width="390" height="284" fill="url(#water)"/>
     <g clip-path="url(#below)" opacity=".5"><g filter="url(#ripple)"><use href="#world" transform="translate(0 1120) scale(1 -1)"/></g></g>
-    <g fill="#ffe3ec" opacity=".55" class="float"><circle cx="40" cy="120" r="1.4"/><circle cx="330" cy="90" r="1.2"/><circle cx="250" cy="300" r="1"/><circle cx="60" cy="430" r="1.3"/><circle cx="350" cy="470" r="1"/><circle cx="190" cy="160" r="1.1"/></g>
+    <g fill="#d9fffd" opacity=".55" class="float"><circle cx="40" cy="120" r="1.4"/><circle cx="330" cy="90" r="1.2"/><circle cx="250" cy="300" r="1"/><circle cx="60" cy="430" r="1.3"/><circle cx="350" cy="470" r="1"/><circle cx="190" cy="160" r="1.1"/></g>
   </svg>
   <div class="intro-title">
     <h1><em>UGC by</em>Ivan</h1>
     <button class="enter" type="button" id="enter"><span data-i18n="enter">Entrer dans mon univers</span> <span class="arr">↘</span></button>
   </div>
 </div>
-<svg class="ink" id="ink" aria-hidden="true"><defs><filter id="blob" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="90"/></filter></defs><circle id="inkc" cx="0" cy="0" r="0" fill="#0c0610" filter="url(#blob)"/></svg>
+<svg class="ink" id="ink" aria-hidden="true"><defs><filter id="blob" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="90"/></filter></defs><circle id="inkc" cx="0" cy="0" r="0" fill="#0b1a21" filter="url(#blob)"/></svg>
 
 <!-- Fond couloir -->
 <div class="corridor" aria-hidden="true">
   <svg viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice">
-<path d="M-43.0 724.8V199.8a35.0 35.0 0 0 1 70.0 0V724.8Z" fill="#3a0f33"/>
-<path d="M18.6 633.9V255.9a25.2 25.2 0 0 1 50.4 0V633.9Z" fill="#330d2e"/>
-<path d="M63.0 568.4V296.2a18.1 18.1 0 0 1 36.3 0V568.4Z" fill="#2b0b27"/>
-<path d="M94.9 521.2V325.3a13.1 13.1 0 0 1 26.1 0V521.2Z" fill="#240920"/>
-<path d="M117.9 487.3V346.2a9.4 9.4 0 0 1 18.8 0V487.3Z" fill="#1e071b"/>
-<path d="M134.4 462.8V361.3a6.8 6.8 0 0 1 13.5 0V462.8Z" fill="#130512"/>
-<path d="M146.4 445.2V372.1a4.9 4.9 0 0 1 9.8 0V445.2Z" fill="#10040f"/>
-<path d="M363.0 724.8V199.8a35.0 35.0 0 0 1 70.0 0V724.8Z" fill="#3a0f33"/>
-<path d="M321.0 633.9V255.9a25.2 25.2 0 0 1 50.4 0V633.9Z" fill="#330d2e"/>
-<path d="M290.8 568.4V296.2a18.1 18.1 0 0 1 36.3 0V568.4Z" fill="#2b0b27"/>
-<path d="M269.0 521.2V325.3a13.1 13.1 0 0 1 26.1 0V521.2Z" fill="#240920"/>
-<path d="M253.3 487.3V346.2a9.4 9.4 0 0 1 18.8 0V487.3Z" fill="#1e071b"/>
-<path d="M242.0 462.8V361.3a6.8 6.8 0 0 1 13.5 0V462.8Z" fill="#130512"/>
-<path d="M233.9 445.2V372.1a4.9 4.9 0 0 1 9.8 0V445.2Z" fill="#10040f"/>
+<path d="M-43.0 724.8V199.8a35.0 35.0 0 0 1 70.0 0V724.8Z" fill="#143640"/>
+<path d="M18.6 633.9V255.9a25.2 25.2 0 0 1 50.4 0V633.9Z" fill="#12313a"/>
+<path d="M63.0 568.4V296.2a18.1 18.1 0 0 1 36.3 0V568.4Z" fill="#102b34"/>
+<path d="M94.9 521.2V325.3a13.1 13.1 0 0 1 26.1 0V521.2Z" fill="#0f262e"/>
+<path d="M117.9 487.3V346.2a9.4 9.4 0 0 1 18.8 0V487.3Z" fill="#0e2229"/>
+<path d="M134.4 462.8V361.3a6.8 6.8 0 0 1 13.5 0V462.8Z" fill="#0d1f26"/>
+<path d="M146.4 445.2V372.1a4.9 4.9 0 0 1 9.8 0V445.2Z" fill="#0c1c23"/>
+<path d="M363.0 724.8V199.8a35.0 35.0 0 0 1 70.0 0V724.8Z" fill="#143640"/>
+<path d="M321.0 633.9V255.9a25.2 25.2 0 0 1 50.4 0V633.9Z" fill="#12313a"/>
+<path d="M290.8 568.4V296.2a18.1 18.1 0 0 1 36.3 0V568.4Z" fill="#102b34"/>
+<path d="M269.0 521.2V325.3a13.1 13.1 0 0 1 26.1 0V521.2Z" fill="#0f262e"/>
+<path d="M253.3 487.3V346.2a9.4 9.4 0 0 1 18.8 0V487.3Z" fill="#0e2229"/>
+<path d="M242.0 462.8V361.3a6.8 6.8 0 0 1 13.5 0V462.8Z" fill="#0d1f26"/>
+<path d="M233.9 445.2V372.1a4.9 4.9 0 0 1 9.8 0V445.2Z" fill="#0c1c23"/>
   </svg>
 </div>
 
@@ -293,9 +293,9 @@ h2 em,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
         <button class="tab" type="button" data-f="arntreal" aria-pressed="false">ARNTREAL</button>
       </div>
       <div class="videos">
-        <article class="vcard reveal" data-b="felli"><div class="media"><video src="media/felli-watches.mp4" playsinline loop preload="metadata"></video><div class="ph">Felli Watches<small>media/felli-watches.mp4</small></div><span class="play"><svg viewBox="0 0 24 24" fill="#14060f"><path d="M7 4.5v15l13-7.5z"/></svg></span></div><div class="vmeta"><div><h3>Felli Watches</h3><span data-i18n="ugc">Vidéo UGC</span></div><span class="arr">↘</span></div></article>
-        <article class="vcard reveal" data-b="chak"><div class="media"><video src="media/chak-aroma.mp4" playsinline loop preload="metadata"></video><div class="ph">Chak Aroma<small>media/chak-aroma.mp4</small></div><span class="play"><svg viewBox="0 0 24 24" fill="#14060f"><path d="M7 4.5v15l13-7.5z"/></svg></span></div><div class="vmeta"><div><h3>Chak Aroma</h3><span data-i18n="ugc">Vidéo UGC</span></div><span class="arr">↘</span></div></article>
-        <article class="vcard reveal" data-b="arntreal"><div class="media"><video src="media/arntreal.mp4" playsinline loop preload="metadata"></video><div class="ph">ARNTREAL<small>media/arntreal.mp4</small></div><span class="play"><svg viewBox="0 0 24 24" fill="#14060f"><path d="M7 4.5v15l13-7.5z"/></svg></span></div><div class="vmeta"><div><h3>ARNTREAL</h3><span data-i18n="ugc">Vidéo UGC</span></div><span class="arr">↘</span></div></article>
+        <article class="vcard reveal" data-b="felli"><div class="media"><video src="media/felli-watches.mp4" playsinline loop preload="metadata"></video><div class="ph">Felli Watches<small>media/felli-watches.mp4</small></div><span class="play"><svg viewBox="0 0 24 24" fill="#04151a"><path d="M7 4.5v15l13-7.5z"/></svg></span></div><div class="vmeta"><div><h3>Felli Watches</h3><span data-i18n="ugc">Vidéo UGC</span></div><span class="arr">↘</span></div></article>
+        <article class="vcard reveal" data-b="chak"><div class="media"><video src="media/chak-aroma.mp4" playsinline loop preload="metadata"></video><div class="ph">Chak Aroma<small>media/chak-aroma.mp4</small></div><span class="play"><svg viewBox="0 0 24 24" fill="#04151a"><path d="M7 4.5v15l13-7.5z"/></svg></span></div><div class="vmeta"><div><h3>Chak Aroma</h3><span data-i18n="ugc">Vidéo UGC</span></div><span class="arr">↘</span></div></article>
+        <article class="vcard reveal" data-b="arntreal"><div class="media"><video src="media/arntreal.mp4" playsinline loop preload="metadata"></video><div class="ph">ARNTREAL<small>media/arntreal.mp4</small></div><span class="play"><svg viewBox="0 0 24 24" fill="#04151a"><path d="M7 4.5v15l13-7.5z"/></svg></span></div><div class="vmeta"><div><h3>ARNTREAL</h3><span data-i18n="ugc">Vidéo UGC</span></div><span class="arr">↘</span></div></article>
       </div>
     </div>
   </section>
